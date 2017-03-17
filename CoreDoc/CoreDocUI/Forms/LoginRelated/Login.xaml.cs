@@ -52,6 +52,8 @@ namespace CoreDocUI.Forms.LoginRelated
         }
         private void TestTimeZone()
         {
+            //Date Time Values
+            DateTime dtNew = new DateTime(2016, 7, 5, 09, 30, 4);
             DateTime dt = new DateTime(2016, 8, 4, 10, 40, 5);
             string timeZoneName = "America/Los_Angeles";
             TimeZoneNames.TimeZoneValues objTimeZoneValues = TimeZoneNames.TZNames.GetNamesForTimeZone(timeZoneName, "en-US");
