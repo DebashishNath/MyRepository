@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A5E3723B-DA57-462C-9BD1-92CD005398AA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CoreLibrary</RootNamespace>
+    <AssemblyName>CoreLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataAccessLayer\CoreDocData.cs" />
+    <Compile Include="DataAccessLayer\DataManagement.cs" />
+    <Compile Include="CoreModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CoreModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CoreModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CoreModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CoreModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CoreModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccessLayer\IDataManagement.cs" />
+    <Compile Include="DataAccessLayer\TestData.cs" />
+    <Compile Include="DataAccessLayer\UtilMethods.cs" />
+    <Compile Include="GetDocumentData_Result.cs">
+      <DependentUpon>CoreModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetMasterData_Result.cs">
+      <DependentUpon>CoreModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="M_Application.cs">
+      <DependentUpon>CoreModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="M_ChildLink.cs">
+      <DependentUpon>CoreModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="M_DocumentType.cs">
+      <DependentUpon>CoreModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="M_ParentLink.cs">
+      <DependentUpon>CoreModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="M_User.cs">
+      <DependentUpon>CoreModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="T_Document.cs">
+      <DependentUpon>CoreModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_Document_AuditLog.cs">
+      <DependentUpon>CoreModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_User_Application_Map.cs">
+      <DependentUpon>CoreModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="CoreModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CoreModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="CoreModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CoreModel.edmx</DependentUpon>
+      <LastGenOutput>CoreModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="CoreModel.edmx.diagram">
+      <DependentUpon>CoreModel.edmx</DependentUpon>
+    </None>
+    <None Include="CoreModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CoreModel.edmx</DependentUpon>
+      <LastGenOutput>CoreModel.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

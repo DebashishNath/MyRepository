@@ -1,0 +1,37 @@
+﻿<Page x:Class="CoreDocUI.Forms.TestForms.TestListView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+	Title="TestListView">
+
+
+    <ListBox>
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.8*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+
+        <ListBoxItem Content="WCF"  Grid.Row="0" Grid.Column="0"/>
+        <ListBoxItem Content="ASP.NET"  Grid.Row="0" Grid.Column="1"/>
+        <ListBoxItem Content="VB.NET" Grid.Row="0" Grid.Column="2"/>
+        <ListBoxItem Content="Silverlight" Grid.Row="1" Grid.Column="0"/>
+        <ListBoxItem Content="Web Services" Grid.Row="1" Grid.Column="1"/>
+        <ListBoxItem Content="Windows Service" Grid.Row="1" Grid.Column="2"/>
+        <ListBoxItem Content="Windows Presentation Foundation" Grid.Row="2" Grid.ColumnSpan="3"/>
+    </ListBox>
+</Page>

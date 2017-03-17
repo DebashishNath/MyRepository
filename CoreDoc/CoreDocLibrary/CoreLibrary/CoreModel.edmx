@@ -1,0 +1,1151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CoreDocDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="M_Application">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+          </Key>
+          <Property Name="ApplicationId" Type="int" Nullable="false" />
+          <Property Name="ApplicationName" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="M_ChildLink">
+          <Key>
+            <PropertyRef Name="ChildLinkId" />
+          </Key>
+          <Property Name="ChildLinkId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ParentLinkId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ChildLinkName" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedById" Type="uniqueidentifier" />
+          <Property Name="CreatedByDate" Type="datetimeoffset" Precision="7" />
+          <Property Name="ModifiedById" Type="uniqueidentifier" />
+          <Property Name="ModifiedByDate" Type="datetimeoffset" Precision="7" />
+        </EntityType>
+        <EntityType Name="M_DocumentType">
+          <Key>
+            <PropertyRef Name="DocumentTypeId" />
+          </Key>
+          <Property Name="DocumentTypeId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ApplicationId" Type="int" />
+          <Property Name="DocumentTypeName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="CreatedById" Type="uniqueidentifier" />
+          <Property Name="CreatedByDate" Type="datetimeoffset" Precision="7" />
+          <Property Name="ModifiedById" Type="uniqueidentifier" />
+          <Property Name="ModifiedByDate" Type="datetimeoffset" Precision="7" />
+        </EntityType>
+        <EntityType Name="M_ParentLink">
+          <Key>
+            <PropertyRef Name="ParentLinkId" />
+          </Key>
+          <Property Name="ParentLinkId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ParentLinkName" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedById" Type="uniqueidentifier" />
+          <Property Name="CreatedByDate" Type="datetimeoffset" Precision="7" />
+          <Property Name="ModifiedById" Type="uniqueidentifier" />
+          <Property Name="ModifiedByDate" Type="datetimeoffset" Precision="7" />
+        </EntityType>
+        <EntityType Name="M_User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="UserFullName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserPassword" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Document">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+          </Key>
+          <Property Name="DocumentId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DocumentTypeId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ParentLinkId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ChildLinkId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Tab" Type="varchar" MaxLength="25" />
+          <Property Name="Section" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Operation" Type="varchar" MaxLength="25" />
+          <Property Name="ViewModel" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="XAMLFileName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="CommandName" Type="varchar" MaxLength="25" />
+          <Property Name="PropertyName" Type="varchar" MaxLength="25" />
+          <Property Name="PropertyDescription" Type="varchar" MaxLength="25" />
+          <Property Name="ServiceFileName" Type="varchar" MaxLength="25" />
+          <Property Name="ServiceMethodName" Type="varchar" MaxLength="25" />
+          <Property Name="ProcedureName" Type="varchar" MaxLength="25" />
+          <Property Name="Comments" Type="varchar" MaxLength="2000" />
+          <Property Name="DocumentStatus" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="CreatedById" Type="uniqueidentifier" />
+          <Property Name="CreatedByDate" Type="datetimeoffset" Precision="7" />
+          <Property Name="ModifiedById" Type="uniqueidentifier" />
+          <Property Name="ModifiedByDate" Type="datetimeoffset" Precision="7" />
+          <Property Name="SlNo" Type="int" />
+        </EntityType>
+        <EntityType Name="T_Document_AuditLog">
+          <Key>
+            <PropertyRef Name="AuditLogId" />
+          </Key>
+          <Property Name="AuditLogId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DocumentId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AuditDate" Type="datetimeoffset" Precision="7" Nullable="false" />
+          <Property Name="AuditDetails" Type="varchar(max)" />
+          <Property Name="DocumentStatus" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_User_Application_Map">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ApplicationId" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ApplicationId" Type="int" Nullable="false" />
+          <Property Name="Status" Type="char" MaxLength="1" />
+        </EntityType>
+        <Association Name="FK_M_ChildLink_M_ParentLink_ParentLinkId">
+          <End Role="M_ParentLink" Type="Self.M_ParentLink" Multiplicity="1" />
+          <End Role="M_ChildLink" Type="Self.M_ChildLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_ParentLink">
+              <PropertyRef Name="ParentLinkId" />
+            </Principal>
+            <Dependent Role="M_ChildLink">
+              <PropertyRef Name="ParentLinkId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_ChildLink_M_User_CreatedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="M_ChildLink" Type="Self.M_ChildLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="M_ChildLink">
+              <PropertyRef Name="CreatedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_ChildLink_M_User_ModifiedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="M_ChildLink" Type="Self.M_ChildLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="M_ChildLink">
+              <PropertyRef Name="ModifiedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_DocumentType_M_Application_ApplicationId">
+          <End Role="M_Application" Type="Self.M_Application" Multiplicity="0..1" />
+          <End Role="M_DocumentType" Type="Self.M_DocumentType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_Application">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="M_DocumentType">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_DocumentType_M_User_CreatedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="M_DocumentType" Type="Self.M_DocumentType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="M_DocumentType">
+              <PropertyRef Name="CreatedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_DocumentType_M_User_ModifiedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="M_DocumentType" Type="Self.M_DocumentType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="M_DocumentType">
+              <PropertyRef Name="ModifiedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_ParentLink_M_User_CreatedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="M_ParentLink" Type="Self.M_ParentLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="M_ParentLink">
+              <PropertyRef Name="CreatedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_ParentLink_M_User_ModifiedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="M_ParentLink" Type="Self.M_ParentLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="M_ParentLink">
+              <PropertyRef Name="ModifiedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_AuditLog_M_User_UserId">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="1" />
+          <End Role="T_Document_AuditLog" Type="Self.T_Document_AuditLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_Document_AuditLog">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_AuditLog_T_Document_AuditLog">
+          <End Role="T_Document" Type="Self.T_Document" Multiplicity="1" />
+          <End Role="T_Document_AuditLog" Type="Self.T_Document_AuditLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Document">
+              <PropertyRef Name="DocumentId" />
+            </Principal>
+            <Dependent Role="T_Document_AuditLog">
+              <PropertyRef Name="DocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_M_ChildLink_ChildLinkId">
+          <End Role="M_ChildLink" Type="Self.M_ChildLink" Multiplicity="1" />
+          <End Role="T_Document" Type="Self.T_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_ChildLink">
+              <PropertyRef Name="ChildLinkId" />
+            </Principal>
+            <Dependent Role="T_Document">
+              <PropertyRef Name="ChildLinkId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_M_DocumentType_DocumentTypeId">
+          <End Role="M_DocumentType" Type="Self.M_DocumentType" Multiplicity="1" />
+          <End Role="T_Document" Type="Self.T_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_DocumentType">
+              <PropertyRef Name="DocumentTypeId" />
+            </Principal>
+            <Dependent Role="T_Document">
+              <PropertyRef Name="DocumentTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_M_ParentLink_ParentLinkId">
+          <End Role="M_ParentLink" Type="Self.M_ParentLink" Multiplicity="1" />
+          <End Role="T_Document" Type="Self.T_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_ParentLink">
+              <PropertyRef Name="ParentLinkId" />
+            </Principal>
+            <Dependent Role="T_Document">
+              <PropertyRef Name="ParentLinkId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_M_User_CreatedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="T_Document" Type="Self.T_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_Document">
+              <PropertyRef Name="CreatedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_M_User_ModifiedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="T_Document" Type="Self.T_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_Document">
+              <PropertyRef Name="ModifiedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_User_Application_Map_M_Application_ApplicationId">
+          <End Role="M_Application" Type="Self.M_Application" Multiplicity="1" />
+          <End Role="T_User_Application_Map" Type="Self.T_User_Application_Map" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_Application">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="T_User_Application_Map">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_User_Application_Map_M_User_UserId">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="1" />
+          <End Role="T_User_Application_Map" Type="Self.T_User_Application_Map" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_User_Application_Map">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GetDocumentData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DocumentId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="GetMasterData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="key" Type="int" Mode="In" />
+          <Parameter Name="searchValue" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SaveApplication" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Tag" Type="char" Mode="In" />
+          <Parameter Name="ApplicationId" Type="int" Mode="In" />
+          <Parameter Name="ApplicationName" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SaveChildLink" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Tag" Type="varchar" Mode="In" />
+          <Parameter Name="ChildLinkId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="ParentLinkId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="ChildLinkName" Type="varchar" Mode="In" />
+          <Parameter Name="UserId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="SaveDocument" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DocumentId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="DocumentTypeId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="ParentLinkId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="ChildLinkId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Tab" Type="varchar" Mode="In" />
+          <Parameter Name="Section" Type="varchar" Mode="In" />
+          <Parameter Name="Operation" Type="varchar" Mode="In" />
+          <Parameter Name="ViewModel" Type="varchar" Mode="In" />
+          <Parameter Name="XAMLFileName" Type="varchar" Mode="In" />
+          <Parameter Name="CommandName" Type="varchar" Mode="In" />
+          <Parameter Name="PropertyName" Type="varchar" Mode="In" />
+          <Parameter Name="PropertyDescription" Type="varchar" Mode="In" />
+          <Parameter Name="ServiceFileName" Type="varchar" Mode="In" />
+          <Parameter Name="ServiceMethodName" Type="varchar" Mode="In" />
+          <Parameter Name="ProcedureName" Type="varchar" Mode="In" />
+          <Parameter Name="Comments" Type="varchar" Mode="In" />
+          <Parameter Name="DocumentStatus" Type="char" Mode="In" />
+          <Parameter Name="UserId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="SaveDocumentType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Tag" Type="varchar" Mode="In" />
+          <Parameter Name="DocumentTypeId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="ApplicationId" Type="int" Mode="In" />
+          <Parameter Name="DocumentTypeName" Type="varchar" Mode="In" />
+          <Parameter Name="UserId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="SaveParentLink" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Tag" Type="varchar" Mode="In" />
+          <Parameter Name="ParentLinkId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="ParentLinkName" Type="varchar" Mode="In" />
+          <Parameter Name="UserId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="SaveUserApplicationMap" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="ApplicationId" Type="int" Mode="In" />
+          <Parameter Name="Status" Type="char" Mode="In" />
+        </Function>
+        <Function Name="SaveUserInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Tag" Type="char" Mode="In" />
+          <Parameter Name="UserId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="UserName" Type="varchar" Mode="In" />
+          <Parameter Name="UserFullName" Type="varchar" Mode="In" />
+          <Parameter Name="UserPassword" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="CoreDocDBModelStoreContainer">
+          <EntitySet Name="M_Application" EntityType="Self.M_Application" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="M_ChildLink" EntityType="Self.M_ChildLink" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="M_DocumentType" EntityType="Self.M_DocumentType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="M_ParentLink" EntityType="Self.M_ParentLink" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="M_User" EntityType="Self.M_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Document" EntityType="Self.T_Document" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Document_AuditLog" EntityType="Self.T_Document_AuditLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_User_Application_Map" EntityType="Self.T_User_Application_Map" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_M_ChildLink_M_ParentLink_ParentLinkId" Association="Self.FK_M_ChildLink_M_ParentLink_ParentLinkId">
+            <End Role="M_ParentLink" EntitySet="M_ParentLink" />
+            <End Role="M_ChildLink" EntitySet="M_ChildLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_ChildLink_M_User_CreatedById" Association="Self.FK_M_ChildLink_M_User_CreatedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="M_ChildLink" EntitySet="M_ChildLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_ChildLink_M_User_ModifiedById" Association="Self.FK_M_ChildLink_M_User_ModifiedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="M_ChildLink" EntitySet="M_ChildLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_DocumentType_M_Application_ApplicationId" Association="Self.FK_M_DocumentType_M_Application_ApplicationId">
+            <End Role="M_Application" EntitySet="M_Application" />
+            <End Role="M_DocumentType" EntitySet="M_DocumentType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_DocumentType_M_User_CreatedById" Association="Self.FK_M_DocumentType_M_User_CreatedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="M_DocumentType" EntitySet="M_DocumentType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_DocumentType_M_User_ModifiedById" Association="Self.FK_M_DocumentType_M_User_ModifiedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="M_DocumentType" EntitySet="M_DocumentType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_ParentLink_M_User_CreatedById" Association="Self.FK_M_ParentLink_M_User_CreatedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="M_ParentLink" EntitySet="M_ParentLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_ParentLink_M_User_ModifiedById" Association="Self.FK_M_ParentLink_M_User_ModifiedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="M_ParentLink" EntitySet="M_ParentLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_AuditLog_M_User_UserId" Association="Self.FK_T_Document_AuditLog_M_User_UserId">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="T_Document_AuditLog" EntitySet="T_Document_AuditLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_AuditLog_T_Document_AuditLog" Association="Self.FK_T_Document_AuditLog_T_Document_AuditLog">
+            <End Role="T_Document" EntitySet="T_Document" />
+            <End Role="T_Document_AuditLog" EntitySet="T_Document_AuditLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_M_ChildLink_ChildLinkId" Association="Self.FK_T_Document_M_ChildLink_ChildLinkId">
+            <End Role="M_ChildLink" EntitySet="M_ChildLink" />
+            <End Role="T_Document" EntitySet="T_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_M_DocumentType_DocumentTypeId" Association="Self.FK_T_Document_M_DocumentType_DocumentTypeId">
+            <End Role="M_DocumentType" EntitySet="M_DocumentType" />
+            <End Role="T_Document" EntitySet="T_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_M_ParentLink_ParentLinkId" Association="Self.FK_T_Document_M_ParentLink_ParentLinkId">
+            <End Role="M_ParentLink" EntitySet="M_ParentLink" />
+            <End Role="T_Document" EntitySet="T_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_M_User_CreatedById" Association="Self.FK_T_Document_M_User_CreatedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="T_Document" EntitySet="T_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_M_User_ModifiedById" Association="Self.FK_T_Document_M_User_ModifiedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="T_Document" EntitySet="T_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_User_Application_Map_M_Application_ApplicationId" Association="Self.FK_T_User_Application_Map_M_Application_ApplicationId">
+            <End Role="M_Application" EntitySet="M_Application" />
+            <End Role="T_User_Application_Map" EntitySet="T_User_Application_Map" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_User_Application_Map_M_User_UserId" Association="Self.FK_T_User_Application_Map_M_User_UserId">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="T_User_Application_Map" EntitySet="T_User_Application_Map" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CoreDocDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="M_Application">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+          </Key>
+          <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+          <Property Name="ApplicationName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="M_DocumentType" Relationship="Self.FK_M_DocumentType_M_Application_ApplicationId" FromRole="M_Application" ToRole="M_DocumentType" />
+          <NavigationProperty Name="T_User_Application_Map" Relationship="Self.FK_T_User_Application_Map_M_Application_ApplicationId" FromRole="M_Application" ToRole="T_User_Application_Map" />
+        </EntityType>
+        <EntityType Name="M_ChildLink">
+          <Key>
+            <PropertyRef Name="ChildLinkId" />
+          </Key>
+          <Property Name="ChildLinkId" Type="Guid" Nullable="false" />
+          <Property Name="ParentLinkId" Type="Guid" Nullable="false" />
+          <Property Name="ChildLinkName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedById" Type="Guid" />
+          <Property Name="CreatedByDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="ModifiedById" Type="Guid" />
+          <Property Name="ModifiedByDate" Type="DateTimeOffset" Precision="7" />
+          <NavigationProperty Name="M_ParentLink" Relationship="Self.FK_M_ChildLink_M_ParentLink_ParentLinkId" FromRole="M_ChildLink" ToRole="M_ParentLink" />
+          <NavigationProperty Name="M_User" Relationship="Self.FK_M_ChildLink_M_User_CreatedById" FromRole="M_ChildLink" ToRole="M_User" />
+          <NavigationProperty Name="M_User1" Relationship="Self.FK_M_ChildLink_M_User_ModifiedById" FromRole="M_ChildLink" ToRole="M_User" />
+          <NavigationProperty Name="T_Document" Relationship="Self.FK_T_Document_M_ChildLink_ChildLinkId" FromRole="M_ChildLink" ToRole="T_Document" />
+        </EntityType>
+        <EntityType Name="M_DocumentType">
+          <Key>
+            <PropertyRef Name="DocumentTypeId" />
+          </Key>
+          <Property Name="DocumentTypeId" Type="Guid" Nullable="false" />
+          <Property Name="ApplicationId" Type="Int32" />
+          <Property Name="DocumentTypeName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedById" Type="Guid" />
+          <Property Name="CreatedByDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="ModifiedById" Type="Guid" />
+          <Property Name="ModifiedByDate" Type="DateTimeOffset" Precision="7" />
+          <NavigationProperty Name="M_Application" Relationship="Self.FK_M_DocumentType_M_Application_ApplicationId" FromRole="M_DocumentType" ToRole="M_Application" />
+          <NavigationProperty Name="M_User" Relationship="Self.FK_M_DocumentType_M_User_CreatedById" FromRole="M_DocumentType" ToRole="M_User" />
+          <NavigationProperty Name="M_User1" Relationship="Self.FK_M_DocumentType_M_User_ModifiedById" FromRole="M_DocumentType" ToRole="M_User" />
+          <NavigationProperty Name="T_Document" Relationship="Self.FK_T_Document_M_DocumentType_DocumentTypeId" FromRole="M_DocumentType" ToRole="T_Document" />
+        </EntityType>
+        <EntityType Name="M_ParentLink">
+          <Key>
+            <PropertyRef Name="ParentLinkId" />
+          </Key>
+          <Property Name="ParentLinkId" Type="Guid" Nullable="false" />
+          <Property Name="ParentLinkName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedById" Type="Guid" />
+          <Property Name="CreatedByDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="ModifiedById" Type="Guid" />
+          <Property Name="ModifiedByDate" Type="DateTimeOffset" Precision="7" />
+          <NavigationProperty Name="M_ChildLink" Relationship="Self.FK_M_ChildLink_M_ParentLink_ParentLinkId" FromRole="M_ParentLink" ToRole="M_ChildLink" />
+          <NavigationProperty Name="M_User" Relationship="Self.FK_M_ParentLink_M_User_CreatedById" FromRole="M_ParentLink" ToRole="M_User" />
+          <NavigationProperty Name="M_User1" Relationship="Self.FK_M_ParentLink_M_User_ModifiedById" FromRole="M_ParentLink" ToRole="M_User" />
+          <NavigationProperty Name="T_Document" Relationship="Self.FK_T_Document_M_ParentLink_ParentLinkId" FromRole="M_ParentLink" ToRole="T_Document" />
+        </EntityType>
+        <EntityType Name="M_User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserFullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="M_ChildLink" Relationship="Self.FK_M_ChildLink_M_User_CreatedById" FromRole="M_User" ToRole="M_ChildLink" />
+          <NavigationProperty Name="M_ChildLink1" Relationship="Self.FK_M_ChildLink_M_User_ModifiedById" FromRole="M_User" ToRole="M_ChildLink" />
+          <NavigationProperty Name="M_DocumentType" Relationship="Self.FK_M_DocumentType_M_User_CreatedById" FromRole="M_User" ToRole="M_DocumentType" />
+          <NavigationProperty Name="M_DocumentType1" Relationship="Self.FK_M_DocumentType_M_User_ModifiedById" FromRole="M_User" ToRole="M_DocumentType" />
+          <NavigationProperty Name="M_ParentLink" Relationship="Self.FK_M_ParentLink_M_User_CreatedById" FromRole="M_User" ToRole="M_ParentLink" />
+          <NavigationProperty Name="M_ParentLink1" Relationship="Self.FK_M_ParentLink_M_User_ModifiedById" FromRole="M_User" ToRole="M_ParentLink" />
+          <NavigationProperty Name="T_Document_AuditLog" Relationship="Self.FK_T_Document_AuditLog_M_User_UserId" FromRole="M_User" ToRole="T_Document_AuditLog" />
+          <NavigationProperty Name="T_Document" Relationship="Self.FK_T_Document_M_User_CreatedById" FromRole="M_User" ToRole="T_Document" />
+          <NavigationProperty Name="T_Document1" Relationship="Self.FK_T_Document_M_User_ModifiedById" FromRole="M_User" ToRole="T_Document" />
+          <NavigationProperty Name="T_User_Application_Map" Relationship="Self.FK_T_User_Application_Map_M_User_UserId" FromRole="M_User" ToRole="T_User_Application_Map" />
+        </EntityType>
+        <EntityType Name="T_Document">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+          </Key>
+          <Property Name="DocumentId" Type="Guid" Nullable="false" />
+          <Property Name="DocumentTypeId" Type="Guid" Nullable="false" />
+          <Property Name="ParentLinkId" Type="Guid" Nullable="false" />
+          <Property Name="ChildLinkId" Type="Guid" Nullable="false" />
+          <Property Name="Tab" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Section" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Operation" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ViewModel" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="XAMLFileName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CommandName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="PropertyName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="PropertyDescription" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ServiceFileName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ServiceMethodName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ProcedureName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Comments" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="DocumentStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="CreatedById" Type="Guid" />
+          <Property Name="CreatedByDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="ModifiedById" Type="Guid" />
+          <Property Name="ModifiedByDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="SlNo" Type="Int32" />
+          <NavigationProperty Name="M_ChildLink" Relationship="Self.FK_T_Document_M_ChildLink_ChildLinkId" FromRole="T_Document" ToRole="M_ChildLink" />
+          <NavigationProperty Name="M_DocumentType" Relationship="Self.FK_T_Document_M_DocumentType_DocumentTypeId" FromRole="T_Document" ToRole="M_DocumentType" />
+          <NavigationProperty Name="M_ParentLink" Relationship="Self.FK_T_Document_M_ParentLink_ParentLinkId" FromRole="T_Document" ToRole="M_ParentLink" />
+          <NavigationProperty Name="M_User" Relationship="Self.FK_T_Document_M_User_CreatedById" FromRole="T_Document" ToRole="M_User" />
+          <NavigationProperty Name="M_User1" Relationship="Self.FK_T_Document_M_User_ModifiedById" FromRole="T_Document" ToRole="M_User" />
+          <NavigationProperty Name="T_Document_AuditLog" Relationship="Self.FK_T_Document_AuditLog_T_Document_AuditLog" FromRole="T_Document" ToRole="T_Document_AuditLog" />
+        </EntityType>
+        <EntityType Name="T_Document_AuditLog">
+          <Key>
+            <PropertyRef Name="AuditLogId" />
+          </Key>
+          <Property Name="AuditLogId" Type="Guid" Nullable="false" />
+          <Property Name="DocumentId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="AuditDate" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="AuditDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DocumentStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="M_User" Relationship="Self.FK_T_Document_AuditLog_M_User_UserId" FromRole="T_Document_AuditLog" ToRole="M_User" />
+          <NavigationProperty Name="T_Document" Relationship="Self.FK_T_Document_AuditLog_T_Document_AuditLog" FromRole="T_Document_AuditLog" ToRole="T_Document" />
+        </EntityType>
+        <EntityType Name="T_User_Application_Map">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ApplicationId" />
+          </Key>
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="M_Application" Relationship="Self.FK_T_User_Application_Map_M_Application_ApplicationId" FromRole="T_User_Application_Map" ToRole="M_Application" />
+          <NavigationProperty Name="M_User" Relationship="Self.FK_T_User_Application_Map_M_User_UserId" FromRole="T_User_Application_Map" ToRole="M_User" />
+        </EntityType>
+        <Association Name="FK_M_DocumentType_M_Application_ApplicationId">
+          <End Role="M_Application" Type="Self.M_Application" Multiplicity="0..1" />
+          <End Role="M_DocumentType" Type="Self.M_DocumentType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_Application">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="M_DocumentType">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_User_Application_Map_M_Application_ApplicationId">
+          <End Role="M_Application" Type="Self.M_Application" Multiplicity="1" />
+          <End Role="T_User_Application_Map" Type="Self.T_User_Application_Map" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_Application">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="T_User_Application_Map">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_ChildLink_M_ParentLink_ParentLinkId">
+          <End Role="M_ParentLink" Type="Self.M_ParentLink" Multiplicity="1" />
+          <End Role="M_ChildLink" Type="Self.M_ChildLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_ParentLink">
+              <PropertyRef Name="ParentLinkId" />
+            </Principal>
+            <Dependent Role="M_ChildLink">
+              <PropertyRef Name="ParentLinkId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_ChildLink_M_User_CreatedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="M_ChildLink" Type="Self.M_ChildLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="M_ChildLink">
+              <PropertyRef Name="CreatedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_ChildLink_M_User_ModifiedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="M_ChildLink" Type="Self.M_ChildLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="M_ChildLink">
+              <PropertyRef Name="ModifiedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_M_ChildLink_ChildLinkId">
+          <End Role="M_ChildLink" Type="Self.M_ChildLink" Multiplicity="1" />
+          <End Role="T_Document" Type="Self.T_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_ChildLink">
+              <PropertyRef Name="ChildLinkId" />
+            </Principal>
+            <Dependent Role="T_Document">
+              <PropertyRef Name="ChildLinkId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_DocumentType_M_User_CreatedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="M_DocumentType" Type="Self.M_DocumentType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="M_DocumentType">
+              <PropertyRef Name="CreatedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_DocumentType_M_User_ModifiedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="M_DocumentType" Type="Self.M_DocumentType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="M_DocumentType">
+              <PropertyRef Name="ModifiedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_M_DocumentType_DocumentTypeId">
+          <End Role="M_DocumentType" Type="Self.M_DocumentType" Multiplicity="1" />
+          <End Role="T_Document" Type="Self.T_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_DocumentType">
+              <PropertyRef Name="DocumentTypeId" />
+            </Principal>
+            <Dependent Role="T_Document">
+              <PropertyRef Name="DocumentTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_ParentLink_M_User_CreatedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="M_ParentLink" Type="Self.M_ParentLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="M_ParentLink">
+              <PropertyRef Name="CreatedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_M_ParentLink_M_User_ModifiedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="M_ParentLink" Type="Self.M_ParentLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="M_ParentLink">
+              <PropertyRef Name="ModifiedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_M_ParentLink_ParentLinkId">
+          <End Role="M_ParentLink" Type="Self.M_ParentLink" Multiplicity="1" />
+          <End Role="T_Document" Type="Self.T_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_ParentLink">
+              <PropertyRef Name="ParentLinkId" />
+            </Principal>
+            <Dependent Role="T_Document">
+              <PropertyRef Name="ParentLinkId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_AuditLog_M_User_UserId">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="1" />
+          <End Role="T_Document_AuditLog" Type="Self.T_Document_AuditLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_Document_AuditLog">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_M_User_CreatedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="T_Document" Type="Self.T_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_Document">
+              <PropertyRef Name="CreatedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_M_User_ModifiedById">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="0..1" />
+          <End Role="T_Document" Type="Self.T_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_Document">
+              <PropertyRef Name="ModifiedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_User_Application_Map_M_User_UserId">
+          <End Role="M_User" Type="Self.M_User" Multiplicity="1" />
+          <End Role="T_User_Application_Map" Type="Self.T_User_Application_Map" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_User_Application_Map">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Document_AuditLog_T_Document_AuditLog">
+          <End Role="T_Document" Type="Self.T_Document" Multiplicity="1" />
+          <End Role="T_Document_AuditLog" Type="Self.T_Document_AuditLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Document">
+              <PropertyRef Name="DocumentId" />
+            </Principal>
+            <Dependent Role="T_Document_AuditLog">
+              <PropertyRef Name="DocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CoreDocDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="M_Application" EntityType="Self.M_Application" />
+          <EntitySet Name="M_ChildLink" EntityType="Self.M_ChildLink" />
+          <EntitySet Name="M_DocumentType" EntityType="Self.M_DocumentType" />
+          <EntitySet Name="M_ParentLink" EntityType="Self.M_ParentLink" />
+          <EntitySet Name="M_User" EntityType="Self.M_User" />
+          <EntitySet Name="T_Document" EntityType="Self.T_Document" />
+          <EntitySet Name="T_Document_AuditLog" EntityType="Self.T_Document_AuditLog" />
+          <EntitySet Name="T_User_Application_Map" EntityType="Self.T_User_Application_Map" />
+          <AssociationSet Name="FK_M_DocumentType_M_Application_ApplicationId" Association="Self.FK_M_DocumentType_M_Application_ApplicationId">
+            <End Role="M_Application" EntitySet="M_Application" />
+            <End Role="M_DocumentType" EntitySet="M_DocumentType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_User_Application_Map_M_Application_ApplicationId" Association="Self.FK_T_User_Application_Map_M_Application_ApplicationId">
+            <End Role="M_Application" EntitySet="M_Application" />
+            <End Role="T_User_Application_Map" EntitySet="T_User_Application_Map" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_ChildLink_M_ParentLink_ParentLinkId" Association="Self.FK_M_ChildLink_M_ParentLink_ParentLinkId">
+            <End Role="M_ParentLink" EntitySet="M_ParentLink" />
+            <End Role="M_ChildLink" EntitySet="M_ChildLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_ChildLink_M_User_CreatedById" Association="Self.FK_M_ChildLink_M_User_CreatedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="M_ChildLink" EntitySet="M_ChildLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_ChildLink_M_User_ModifiedById" Association="Self.FK_M_ChildLink_M_User_ModifiedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="M_ChildLink" EntitySet="M_ChildLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_M_ChildLink_ChildLinkId" Association="Self.FK_T_Document_M_ChildLink_ChildLinkId">
+            <End Role="M_ChildLink" EntitySet="M_ChildLink" />
+            <End Role="T_Document" EntitySet="T_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_DocumentType_M_User_CreatedById" Association="Self.FK_M_DocumentType_M_User_CreatedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="M_DocumentType" EntitySet="M_DocumentType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_DocumentType_M_User_ModifiedById" Association="Self.FK_M_DocumentType_M_User_ModifiedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="M_DocumentType" EntitySet="M_DocumentType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_M_DocumentType_DocumentTypeId" Association="Self.FK_T_Document_M_DocumentType_DocumentTypeId">
+            <End Role="M_DocumentType" EntitySet="M_DocumentType" />
+            <End Role="T_Document" EntitySet="T_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_ParentLink_M_User_CreatedById" Association="Self.FK_M_ParentLink_M_User_CreatedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="M_ParentLink" EntitySet="M_ParentLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_M_ParentLink_M_User_ModifiedById" Association="Self.FK_M_ParentLink_M_User_ModifiedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="M_ParentLink" EntitySet="M_ParentLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_M_ParentLink_ParentLinkId" Association="Self.FK_T_Document_M_ParentLink_ParentLinkId">
+            <End Role="M_ParentLink" EntitySet="M_ParentLink" />
+            <End Role="T_Document" EntitySet="T_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_AuditLog_M_User_UserId" Association="Self.FK_T_Document_AuditLog_M_User_UserId">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="T_Document_AuditLog" EntitySet="T_Document_AuditLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_M_User_CreatedById" Association="Self.FK_T_Document_M_User_CreatedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="T_Document" EntitySet="T_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_M_User_ModifiedById" Association="Self.FK_T_Document_M_User_ModifiedById">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="T_Document" EntitySet="T_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_User_Application_Map_M_User_UserId" Association="Self.FK_T_User_Application_Map_M_User_UserId">
+            <End Role="M_User" EntitySet="M_User" />
+            <End Role="T_User_Application_Map" EntitySet="T_User_Application_Map" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Document_AuditLog_T_Document_AuditLog" Association="Self.FK_T_Document_AuditLog_T_Document_AuditLog">
+            <End Role="T_Document" EntitySet="T_Document" />
+            <End Role="T_Document_AuditLog" EntitySet="T_Document_AuditLog" />
+          </AssociationSet>
+          <FunctionImport Name="GetMasterData" ReturnType="Collection(CoreDocDBModel.GetMasterData_Result)">
+            <Parameter Name="key" Mode="In" Type="Int32" />
+            <Parameter Name="searchValue" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SaveChildLink">
+            <Parameter Name="Tag" Mode="In" Type="String" />
+            <Parameter Name="ChildLinkId" Mode="In" Type="Guid" />
+            <Parameter Name="ParentLinkId" Mode="In" Type="Guid" />
+            <Parameter Name="ChildLinkName" Mode="In" Type="String" />
+            <Parameter Name="UserId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="SaveDocument">
+            <Parameter Name="DocumentId" Mode="In" Type="Guid" />
+            <Parameter Name="DocumentTypeId" Mode="In" Type="Guid" />
+            <Parameter Name="ParentLinkId" Mode="In" Type="Guid" />
+            <Parameter Name="ChildLinkId" Mode="In" Type="Guid" />
+            <Parameter Name="Tab" Mode="In" Type="String" />
+            <Parameter Name="Section" Mode="In" Type="String" />
+            <Parameter Name="Operation" Mode="In" Type="String" />
+            <Parameter Name="ViewModel" Mode="In" Type="String" />
+            <Parameter Name="XAMLFileName" Mode="In" Type="String" />
+            <Parameter Name="CommandName" Mode="In" Type="String" />
+            <Parameter Name="PropertyName" Mode="In" Type="String" />
+            <Parameter Name="PropertyDescription" Mode="In" Type="String" />
+            <Parameter Name="ServiceFileName" Mode="In" Type="String" />
+            <Parameter Name="ServiceMethodName" Mode="In" Type="String" />
+            <Parameter Name="ProcedureName" Mode="In" Type="String" />
+            <Parameter Name="Comments" Mode="In" Type="String" />
+            <Parameter Name="DocumentStatus" Mode="In" Type="String" />
+            <Parameter Name="UserId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="SaveDocumentType">
+            <Parameter Name="Tag" Mode="In" Type="String" />
+            <Parameter Name="DocumentTypeId" Mode="In" Type="Guid" />
+            <Parameter Name="ApplicationId" Mode="In" Type="Int32" />
+            <Parameter Name="DocumentTypeName" Mode="In" Type="String" />
+            <Parameter Name="UserId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="SaveParentLink">
+            <Parameter Name="Tag" Mode="In" Type="String" />
+            <Parameter Name="ParentLinkId" Mode="In" Type="Guid" />
+            <Parameter Name="ParentLinkName" Mode="In" Type="String" />
+            <Parameter Name="UserId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="SaveUserApplicationMap">
+            <Parameter Name="UserId" Mode="In" Type="Guid" />
+            <Parameter Name="ApplicationId" Mode="In" Type="Int32" />
+            <Parameter Name="Status" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SaveUserInfo">
+            <Parameter Name="Tag" Mode="In" Type="String" />
+            <Parameter Name="UserId" Mode="In" Type="Guid" />
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="UserFullName" Mode="In" Type="String" />
+            <Parameter Name="UserPassword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SaveApplication">
+            <Parameter Name="Tag" Mode="In" Type="String" />
+            <Parameter Name="ApplicationId" Mode="In" Type="Int32" />
+            <Parameter Name="ApplicationName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetDocumentData" ReturnType="Collection(CoreDocDBModel.GetDocumentData_Result)">
+          <Parameter Name="DocumentId" Mode="In" Type="Guid" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="GetMasterData_Result">
+          <Property Type="Guid" Name="Id" Nullable="true" />
+          <Property Type="Int32" Name="DataId" Nullable="false" />
+          <Property Type="String" Name="DataName" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="OtherInfo1" Nullable="false" />
+          <Property Type="String" Name="OtherInfo2" Nullable="false" MaxLength="1" />
+          <Property Type="Int32" Name="OtherInfo3" Nullable="false" />
+          <Property Type="String" Name="OtherInfo4" Nullable="false" MaxLength="1" />
+          </ComplexType>
+        <ComplexType Name="GetDocumentData_Result">
+          <Property Type="Guid" Name="DocumentId" Nullable="false" />
+          <Property Type="Guid" Name="DocumentTypeId" Nullable="false" />
+          <Property Type="String" Name="DocumentTypeName" Nullable="false" MaxLength="25" />
+          <Property Type="Guid" Name="ParentLinkId" Nullable="false" />
+          <Property Type="String" Name="ParentLinkName" Nullable="true" MaxLength="50" />
+          <Property Type="Guid" Name="ChildLinkId" Nullable="false" />
+          <Property Type="String" Name="ChildLinkName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Tab" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="Section" Nullable="false" MaxLength="25" />
+          <Property Type="String" Name="Operation" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="ViewModel" Nullable="false" MaxLength="25" />
+          <Property Type="String" Name="XAMLFileName" Nullable="false" MaxLength="25" />
+          <Property Type="String" Name="CommandName" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="PropertyName" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="PropertyDescription" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="ServiceFileName" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="ServiceMethodName" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="ProcedureName" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="Comments" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="DocumentStatus" Nullable="false" MaxLength="1" />
+          <Property Type="Guid" Name="DocumentTypeId1" Nullable="false" />
+          <Property Type="Guid" Name="ParentLinkId1" Nullable="false" />
+          <Property Type="Guid" Name="ChildLinkId1" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CoreDocDBModelStoreContainer" CdmEntityContainer="CoreDocDBEntities">
+          <EntitySetMapping Name="M_Application">
+            <EntityTypeMapping TypeName="CoreDocDBModel.M_Application">
+              <MappingFragment StoreEntitySet="M_Application">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_ChildLink">
+            <EntityTypeMapping TypeName="CoreDocDBModel.M_ChildLink">
+              <MappingFragment StoreEntitySet="M_ChildLink">
+                <ScalarProperty Name="ChildLinkId" ColumnName="ChildLinkId" />
+                <ScalarProperty Name="ParentLinkId" ColumnName="ParentLinkId" />
+                <ScalarProperty Name="ChildLinkName" ColumnName="ChildLinkName" />
+                <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+                <ScalarProperty Name="CreatedByDate" ColumnName="CreatedByDate" />
+                <ScalarProperty Name="ModifiedById" ColumnName="ModifiedById" />
+                <ScalarProperty Name="ModifiedByDate" ColumnName="ModifiedByDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_DocumentType">
+            <EntityTypeMapping TypeName="CoreDocDBModel.M_DocumentType">
+              <MappingFragment StoreEntitySet="M_DocumentType">
+                <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="DocumentTypeName" ColumnName="DocumentTypeName" />
+                <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+                <ScalarProperty Name="CreatedByDate" ColumnName="CreatedByDate" />
+                <ScalarProperty Name="ModifiedById" ColumnName="ModifiedById" />
+                <ScalarProperty Name="ModifiedByDate" ColumnName="ModifiedByDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_ParentLink">
+            <EntityTypeMapping TypeName="CoreDocDBModel.M_ParentLink">
+              <MappingFragment StoreEntitySet="M_ParentLink">
+                <ScalarProperty Name="ParentLinkId" ColumnName="ParentLinkId" />
+                <ScalarProperty Name="ParentLinkName" ColumnName="ParentLinkName" />
+                <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+                <ScalarProperty Name="CreatedByDate" ColumnName="CreatedByDate" />
+                <ScalarProperty Name="ModifiedById" ColumnName="ModifiedById" />
+                <ScalarProperty Name="ModifiedByDate" ColumnName="ModifiedByDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_User">
+            <EntityTypeMapping TypeName="CoreDocDBModel.M_User">
+              <MappingFragment StoreEntitySet="M_User">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserFullName" ColumnName="UserFullName" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Document">
+            <EntityTypeMapping TypeName="CoreDocDBModel.T_Document">
+              <MappingFragment StoreEntitySet="T_Document">
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+                <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+                <ScalarProperty Name="ParentLinkId" ColumnName="ParentLinkId" />
+                <ScalarProperty Name="ChildLinkId" ColumnName="ChildLinkId" />
+                <ScalarProperty Name="Tab" ColumnName="Tab" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Operation" ColumnName="Operation" />
+                <ScalarProperty Name="ViewModel" ColumnName="ViewModel" />
+                <ScalarProperty Name="XAMLFileName" ColumnName="XAMLFileName" />
+                <ScalarProperty Name="CommandName" ColumnName="CommandName" />
+                <ScalarProperty Name="PropertyName" ColumnName="PropertyName" />
+                <ScalarProperty Name="PropertyDescription" ColumnName="PropertyDescription" />
+                <ScalarProperty Name="ServiceFileName" ColumnName="ServiceFileName" />
+                <ScalarProperty Name="ServiceMethodName" ColumnName="ServiceMethodName" />
+                <ScalarProperty Name="ProcedureName" ColumnName="ProcedureName" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="DocumentStatus" ColumnName="DocumentStatus" />
+                <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+                <ScalarProperty Name="CreatedByDate" ColumnName="CreatedByDate" />
+                <ScalarProperty Name="ModifiedById" ColumnName="ModifiedById" />
+                <ScalarProperty Name="ModifiedByDate" ColumnName="ModifiedByDate" />
+                <ScalarProperty Name="SlNo" ColumnName="SlNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Document_AuditLog">
+            <EntityTypeMapping TypeName="CoreDocDBModel.T_Document_AuditLog">
+              <MappingFragment StoreEntitySet="T_Document_AuditLog">
+                <ScalarProperty Name="AuditLogId" ColumnName="AuditLogId" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AuditDate" ColumnName="AuditDate" />
+                <ScalarProperty Name="AuditDetails" ColumnName="AuditDetails" />
+                <ScalarProperty Name="DocumentStatus" ColumnName="DocumentStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_User_Application_Map">
+            <EntityTypeMapping TypeName="CoreDocDBModel.T_User_Application_Map">
+              <MappingFragment StoreEntitySet="T_User_Application_Map">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetMasterData" FunctionName="CoreDocDBModel.Store.GetMasterData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreDocDBModel.GetMasterData_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DataId" ColumnName="DataId" />
+                <ScalarProperty Name="DataName" ColumnName="DataName" />
+                <ScalarProperty Name="OtherInfo1" ColumnName="OtherInfo1" />
+                <ScalarProperty Name="OtherInfo2" ColumnName="OtherInfo2" />
+                <ScalarProperty Name="OtherInfo3" ColumnName="OtherInfo3" />
+                <ScalarProperty Name="OtherInfo4" ColumnName="OtherInfo4" />
+                </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SaveChildLink" FunctionName="CoreDocDBModel.Store.SaveChildLink" />
+          <FunctionImportMapping FunctionImportName="SaveDocument" FunctionName="CoreDocDBModel.Store.SaveDocument" />
+          <FunctionImportMapping FunctionImportName="SaveDocumentType" FunctionName="CoreDocDBModel.Store.SaveDocumentType" />
+          <FunctionImportMapping FunctionImportName="SaveParentLink" FunctionName="CoreDocDBModel.Store.SaveParentLink" />
+          <FunctionImportMapping FunctionImportName="SaveUserApplicationMap" FunctionName="CoreDocDBModel.Store.SaveUserApplicationMap" />
+          <FunctionImportMapping FunctionImportName="SaveUserInfo" FunctionName="CoreDocDBModel.Store.SaveUserInfo" />
+          <FunctionImportMapping FunctionImportName="SaveApplication" FunctionName="CoreDocDBModel.Store.SaveApplication" />
+          <FunctionImportMapping FunctionImportName="GetDocumentData" FunctionName="CoreDocDBModel.Store.GetDocumentData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreDocDBModel.GetDocumentData_Result">
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+                <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+                <ScalarProperty Name="DocumentTypeName" ColumnName="DocumentTypeName" />
+                <ScalarProperty Name="ParentLinkId" ColumnName="ParentLinkId" />
+                <ScalarProperty Name="ParentLinkName" ColumnName="ParentLinkName" />
+                <ScalarProperty Name="ChildLinkId" ColumnName="ChildLinkId" />
+                <ScalarProperty Name="ChildLinkName" ColumnName="ChildLinkName" />
+                <ScalarProperty Name="Tab" ColumnName="Tab" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Operation" ColumnName="Operation" />
+                <ScalarProperty Name="ViewModel" ColumnName="ViewModel" />
+                <ScalarProperty Name="XAMLFileName" ColumnName="XAMLFileName" />
+                <ScalarProperty Name="CommandName" ColumnName="CommandName" />
+                <ScalarProperty Name="PropertyName" ColumnName="PropertyName" />
+                <ScalarProperty Name="PropertyDescription" ColumnName="PropertyDescription" />
+                <ScalarProperty Name="ServiceFileName" ColumnName="ServiceFileName" />
+                <ScalarProperty Name="ServiceMethodName" ColumnName="ServiceMethodName" />
+                <ScalarProperty Name="ProcedureName" ColumnName="ProcedureName" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="DocumentStatus" ColumnName="DocumentStatus" />
+                <ScalarProperty Name="DocumentTypeId1" ColumnName="DocumentTypeId1" />
+                <ScalarProperty Name="ParentLinkId1" ColumnName="ParentLinkId1" />
+                <ScalarProperty Name="ChildLinkId1" ColumnName="ChildLinkId1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

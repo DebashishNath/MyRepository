@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CoreDocDBModelStoreContainer" CdmEntityContainer="CoreDocDBEntities">
+    <EntitySetMapping Name="M_Application">
+      <EntityTypeMapping TypeName="CoreDocDBModel.M_Application">
+        <MappingFragment StoreEntitySet="M_Application">
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="M_ChildLink">
+      <EntityTypeMapping TypeName="CoreDocDBModel.M_ChildLink">
+        <MappingFragment StoreEntitySet="M_ChildLink">
+          <ScalarProperty Name="ChildLinkId" ColumnName="ChildLinkId" />
+          <ScalarProperty Name="ParentLinkId" ColumnName="ParentLinkId" />
+          <ScalarProperty Name="ChildLinkName" ColumnName="ChildLinkName" />
+          <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+          <ScalarProperty Name="CreatedByDate" ColumnName="CreatedByDate" />
+          <ScalarProperty Name="ModifiedById" ColumnName="ModifiedById" />
+          <ScalarProperty Name="ModifiedByDate" ColumnName="ModifiedByDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="M_DocumentType">
+      <EntityTypeMapping TypeName="CoreDocDBModel.M_DocumentType">
+        <MappingFragment StoreEntitySet="M_DocumentType">
+          <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="DocumentTypeName" ColumnName="DocumentTypeName" />
+          <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+          <ScalarProperty Name="CreatedByDate" ColumnName="CreatedByDate" />
+          <ScalarProperty Name="ModifiedById" ColumnName="ModifiedById" />
+          <ScalarProperty Name="ModifiedByDate" ColumnName="ModifiedByDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="M_ParentLink">
+      <EntityTypeMapping TypeName="CoreDocDBModel.M_ParentLink">
+        <MappingFragment StoreEntitySet="M_ParentLink">
+          <ScalarProperty Name="ParentLinkId" ColumnName="ParentLinkId" />
+          <ScalarProperty Name="ParentLinkName" ColumnName="ParentLinkName" />
+          <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+          <ScalarProperty Name="CreatedByDate" ColumnName="CreatedByDate" />
+          <ScalarProperty Name="ModifiedById" ColumnName="ModifiedById" />
+          <ScalarProperty Name="ModifiedByDate" ColumnName="ModifiedByDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="M_User">
+      <EntityTypeMapping TypeName="CoreDocDBModel.M_User">
+        <MappingFragment StoreEntitySet="M_User">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserFullName" ColumnName="UserFullName" />
+          <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_Document">
+      <EntityTypeMapping TypeName="CoreDocDBModel.T_Document">
+        <MappingFragment StoreEntitySet="T_Document">
+          <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+          <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+          <ScalarProperty Name="ParentLinkId" ColumnName="ParentLinkId" />
+          <ScalarProperty Name="ChildLinkId" ColumnName="ChildLinkId" />
+          <ScalarProperty Name="Tab" ColumnName="Tab" />
+          <ScalarProperty Name="Section" ColumnName="Section" />
+          <ScalarProperty Name="Operation" ColumnName="Operation" />
+          <ScalarProperty Name="ViewModel" ColumnName="ViewModel" />
+          <ScalarProperty Name="XAMLFileName" ColumnName="XAMLFileName" />
+          <ScalarProperty Name="CommandName" ColumnName="CommandName" />
+          <ScalarProperty Name="PropertyName" ColumnName="PropertyName" />
+          <ScalarProperty Name="PropertyDescription" ColumnName="PropertyDescription" />
+          <ScalarProperty Name="ServiceFileName" ColumnName="ServiceFileName" />
+          <ScalarProperty Name="ServiceMethodName" ColumnName="ServiceMethodName" />
+          <ScalarProperty Name="ProcedureName" ColumnName="ProcedureName" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="DocumentStatus" ColumnName="DocumentStatus" />
+          <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+          <ScalarProperty Name="CreatedByDate" ColumnName="CreatedByDate" />
+          <ScalarProperty Name="ModifiedById" ColumnName="ModifiedById" />
+          <ScalarProperty Name="ModifiedByDate" ColumnName="ModifiedByDate" />
+          <ScalarProperty Name="SlNo" ColumnName="SlNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_Document_AuditLog">
+      <EntityTypeMapping TypeName="CoreDocDBModel.T_Document_AuditLog">
+        <MappingFragment StoreEntitySet="T_Document_AuditLog">
+          <ScalarProperty Name="AuditLogId" ColumnName="AuditLogId" />
+          <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="AuditDate" ColumnName="AuditDate" />
+          <ScalarProperty Name="AuditDetails" ColumnName="AuditDetails" />
+          <ScalarProperty Name="DocumentStatus" ColumnName="DocumentStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_User_Application_Map">
+      <EntityTypeMapping TypeName="CoreDocDBModel.T_User_Application_Map">
+        <MappingFragment StoreEntitySet="T_User_Application_Map">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GetMasterData" FunctionName="CoreDocDBModel.Store.GetMasterData">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CoreDocDBModel.GetMasterData_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DataId" ColumnName="DataId" />
+          <ScalarProperty Name="DataName" ColumnName="DataName" />
+          <ScalarProperty Name="OtherInfo1" ColumnName="OtherInfo1" />
+          <ScalarProperty Name="OtherInfo2" ColumnName="OtherInfo2" />
+          <ScalarProperty Name="OtherInfo3" ColumnName="OtherInfo3" />
+          <ScalarProperty Name="OtherInfo4" ColumnName="OtherInfo4" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SaveChildLink" FunctionName="CoreDocDBModel.Store.SaveChildLink" />
+    <FunctionImportMapping FunctionImportName="SaveDocument" FunctionName="CoreDocDBModel.Store.SaveDocument" />
+    <FunctionImportMapping FunctionImportName="SaveDocumentType" FunctionName="CoreDocDBModel.Store.SaveDocumentType" />
+    <FunctionImportMapping FunctionImportName="SaveParentLink" FunctionName="CoreDocDBModel.Store.SaveParentLink" />
+    <FunctionImportMapping FunctionImportName="SaveUserApplicationMap" FunctionName="CoreDocDBModel.Store.SaveUserApplicationMap" />
+    <FunctionImportMapping FunctionImportName="SaveUserInfo" FunctionName="CoreDocDBModel.Store.SaveUserInfo" />
+    <FunctionImportMapping FunctionImportName="SaveApplication" FunctionName="CoreDocDBModel.Store.SaveApplication" />
+    <FunctionImportMapping FunctionImportName="GetDocumentData" FunctionName="CoreDocDBModel.Store.GetDocumentData">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CoreDocDBModel.GetDocumentData_Result">
+          <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+          <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+          <ScalarProperty Name="DocumentTypeName" ColumnName="DocumentTypeName" />
+          <ScalarProperty Name="ParentLinkId" ColumnName="ParentLinkId" />
+          <ScalarProperty Name="ParentLinkName" ColumnName="ParentLinkName" />
+          <ScalarProperty Name="ChildLinkId" ColumnName="ChildLinkId" />
+          <ScalarProperty Name="ChildLinkName" ColumnName="ChildLinkName" />
+          <ScalarProperty Name="Tab" ColumnName="Tab" />
+          <ScalarProperty Name="Section" ColumnName="Section" />
+          <ScalarProperty Name="Operation" ColumnName="Operation" />
+          <ScalarProperty Name="ViewModel" ColumnName="ViewModel" />
+          <ScalarProperty Name="XAMLFileName" ColumnName="XAMLFileName" />
+          <ScalarProperty Name="CommandName" ColumnName="CommandName" />
+          <ScalarProperty Name="PropertyName" ColumnName="PropertyName" />
+          <ScalarProperty Name="PropertyDescription" ColumnName="PropertyDescription" />
+          <ScalarProperty Name="ServiceFileName" ColumnName="ServiceFileName" />
+          <ScalarProperty Name="ServiceMethodName" ColumnName="ServiceMethodName" />
+          <ScalarProperty Name="ProcedureName" ColumnName="ProcedureName" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="DocumentStatus" ColumnName="DocumentStatus" />
+          <ScalarProperty Name="DocumentTypeId1" ColumnName="DocumentTypeId1" />
+          <ScalarProperty Name="ParentLinkId1" ColumnName="ParentLinkId1" />
+          <ScalarProperty Name="ChildLinkId1" ColumnName="ChildLinkId1" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>
